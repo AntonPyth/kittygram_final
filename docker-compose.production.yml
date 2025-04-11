@@ -12,19 +12,19 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
   backend:
-    image: nir0ss/kittygram_backend
+    image: antonpyth/kittygram_backend
     env_file: .env
     volumes:
       - static:/static
       - media:/app/media
   frontend:
     env_file: .env
-    image: nir0ss/kittygram_frontend
+    image: antonpyth/kittygram_frontend
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
   gateway:
-    image: nir0ss/kittygram_gateway
+    image: antonpyth/kittygram_gateway
     env_file: .env
     ports:
       - "${PORT}:80"
