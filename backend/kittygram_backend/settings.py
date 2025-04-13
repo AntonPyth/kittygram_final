@@ -64,10 +64,10 @@ WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'django'),
-        'USER': os.getenv('POSTGRES_USER', 'django'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', ''),
+        'NAME': os.getenv('POSTGRES_DB', 'kittygram_db'),
+        'USER': os.getenv('POSTGRES_USER', 'anton_admin'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'Rjxetd11'),
+        'HOST': os.getenv('DB_HOST', 'db'),
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }
@@ -112,9 +112,9 @@ MEDIA_ROOT = '/mediafiles/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny', 
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.AllowAny', 
+    # ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -125,9 +125,17 @@ REST_FRAMEWORK = {
 
 }
 
+# DJOSER = {
+#     'PERMISSIONS': {
+#         'user_create': ['rest_framework.permissions.AllowAny'],  # Регистрация без авторизации
+#         'user_list': ['rest_framework.permissions.IsAuthenticated'],  # Только для авторизованных
+#     }
+# }
+
 DJOSER = {
+    'SEND_ACTIVATION_EMAIL': False,
     'PERMISSIONS': {
-        'user_create': ['rest_framework.permissions.AllowAny'],  # Регистрация без авторизации
-        'user_list': ['rest_framework.permissions.IsAuthenticated'],  # Только для авторизованных
+        'user_create': ['rest_framework.permissions.AllowAny'],  # Разрешить создание пользователя без аутентификации
+        'user': ['rest_framework.permissions.IsAuthenticated'],  # Требовать аутентификацию для просмотра/изменения
     }
 }
