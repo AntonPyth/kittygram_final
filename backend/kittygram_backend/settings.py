@@ -135,7 +135,8 @@ REST_FRAMEWORK = {
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': False,
     'PERMISSIONS': {
-        'user_create': ['rest_framework.permissions.AllowAny'],  # Разрешить создание пользователя без аутентификации
-        'user': ['rest_framework.permissions.IsAuthenticated'],  # Требовать аутентификацию для просмотра/изменения
+        'user_create': ['rest_framework.permissions.AllowAny'],  # Разрешить регистрацию
+        'user_list': ['rest_framework.permissions.AllowAny'],    # Разрешить просмотр списка
+        'user': ['rest_framework.permissions.IsAuthenticated']   # Требовать аутентификацию для других действий
     }
 }
