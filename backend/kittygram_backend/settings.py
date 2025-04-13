@@ -124,3 +124,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 
 }
+
+DJOSER = {
+    'PERMISSIONS': {
+        'user_create': ['rest_framework.permissions.AllowAny'],
+        'user_list': ['rest_framework.permissions.IsAuthenticated'],
+    }
+}
