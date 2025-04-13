@@ -20,8 +20,10 @@ services:
     depends_on:
       - db
     volumes:
-      - static:/backend_static
-      - media:/app/media
+      - static:/backend_static/static  # Явно укажите поддиректорию
+      - media:/mediafiles/
+      # - static:/backend_static
+      # - media:/app/media
   
   frontend:
     image: antonpyth/kittygram_frontend
