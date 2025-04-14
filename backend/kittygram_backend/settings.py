@@ -131,12 +131,20 @@ REST_FRAMEWORK = {
 #         'user_list': ['rest_framework.permissions.IsAuthenticated'],  # Только для авторизованных
 #     }
 # }
-
+# DJOSER = {
+#     'SEND_ACTIVATION_EMAIL': False,
+#     'PERMISSIONS': {
+#         'user_create': ['rest_framework.permissions.AllowAny'],  # Разрешить регистрацию
+#         'user_list': ['rest_framework.permissions.AllowAny'],    # Разрешить просмотр списка
+#         'user': ['rest_framework.permissions.IsAuthenticated']   # Требовать аутентификацию для других действий
+#     }
+# }
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': False,
     'PERMISSIONS': {
-        'user_create': ['rest_framework.permissions.AllowAny'],  # Разрешить регистрацию
-        'user_list': ['rest_framework.permissions.AllowAny'],    # Разрешить просмотр списка
-        'user': ['rest_framework.permissions.IsAuthenticated']   # Требовать аутентификацию для других действий
+        'user_create': ['rest_framework.permissions.AllowAny'],
+    },
+    'SERIALIZERS': {
+        'user_create': 'djoser.serializers.UserCreateSerializer',
     }
 }
