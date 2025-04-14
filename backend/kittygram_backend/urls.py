@@ -14,12 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     # Регистрация пользователя
-    path(
-        'api/users/register/',
-        UserViewSet.as_view({'post': 'create'}),
-        name='user-register'
-        ),
-    # Токены
+    path('api/users/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
 ]
 
