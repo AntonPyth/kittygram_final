@@ -1,55 +1,30 @@
 version: '3'
 
-networks:
-  kittygram_network:
-    driver: bridge
-
 volumes:
-  pg_data:
-  static:
-  media:
+  pg_data_production:
+  static_volume:
 
 services:
   db:
     image: postgres:13.10
     env_file: .env
     volumes:
-      - pg_data:/var/lib/postgresql/data
-    networks:
-      - kittygram_network
-  
+      - pg_data_production:/var/lib/postgresql/data
   backend:
     image: antonpyth/kittygram_backend
     env_file: .env
-    command: gunicorn kittygram_backend.wsgi:application --bind 0.0.0.0:9000
-    depends_on:
-      - db
     volumes:
-      - static:/backend_static/static
-      - media:/mediafiles/
-    networks:
-      - kittygram_network
-  
+      - static_volume:/backend_static
   frontend:
     image: antonpyth/kittygram_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static:/frontend_static
-    networks:
-      - kittygram_network
-  
+      - static_volume:/frontend_static
   gateway:
-    image: nginx:latest
-    depends_on:
-      - backend
-      - frontend
+    image: antonpyth/kittygram_gateway
+    env_file: .env
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - static:/staticfiles
-      - media:/mediafiles
+      - static_volume:/staticfiles/
     ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - kittygram_network
+      - 9000:80

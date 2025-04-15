@@ -1,25 +1,13 @@
-# flake8: noqa
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-
-load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-89$'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-placeholder')
 
-DEBUG = False
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-ALLOWED_HOSTS = ['kittygram777.zapto.org',
-                 '158.160.3.109',
-                 '127.0.0.1',
-                 'localhost'
-                 ]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -68,16 +56,13 @@ WSGI_APPLICATION = 'kittygram_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'kittygram_db'),
-        'USER': os.getenv('POSTGRES_USER', 'anton_admin'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'Rjxetd11'),
-        'HOST': os.getenv('DB_HOST', 'db'),
+        'NAME': os.getenv('POSTGRES_DB', 'django'),
+        'USER': os.getenv('POSTGRES_USER', 'django'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', ''),
         'PORT': os.getenv('DB_PORT', 5432)
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -104,21 +89,20 @@ USE_L10N = True
 
 USE_TZ = True
 
-# STATIC_ROOT = '/app/collected_static'
+
 STATIC_URL = '/static/'
-STATIC_ROOT = "/backend_static/static"
-# STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+STATIC_ROOT = '/app/collected_static'
+# STATIC_ROOT = str(BASE_DIR / 'collected_static')
 
 MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_ROOT = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.AllowAny', 
-    # ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -126,29 +110,8 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-
 }
 
-# DJOSER = {
-#     'PERMISSIONS': {
-#         'user_create': ['rest_framework.permissions.AllowAny'],  # Регистрация без авторизации
-#         'user_list': ['rest_framework.permissions.IsAuthenticated'],  # Только для авторизованных
-#     }
-# }
-# DJOSER = {
-#     'SEND_ACTIVATION_EMAIL': False,
-#     'PERMISSIONS': {
-#         'user_create': ['rest_framework.permissions.AllowAny'],  # Разрешить регистрацию
-#         'user_list': ['rest_framework.permissions.AllowAny'],    # Разрешить просмотр списка
-#         'user': ['rest_framework.permissions.IsAuthenticated']   # Требовать аутентификацию для других действий
-#     }
-# }
-DJOSER = {
-    'SEND_ACTIVATION_EMAIL': False,
-    'PERMISSIONS': {
-        'user_create': ['rest_framework.permissions.AllowAny'],
-    },
-    'SERIALIZERS': {
-        'user_create': 'djoser.serializers.UserCreateSerializer',
-    }
-}
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000'
+]
