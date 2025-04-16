@@ -1,30 +1,43 @@
 version: '3'
 
 volumes:
-  pg_data_production:
-  static_volume:
+  pg_data:
+  static:
+  media:
 
 services:
+  
   db:
     image: postgres:13.10
     env_file: .env
     volumes:
-      - pg_data_production:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+  
   backend:
     image: antonpyth/kittygram_backend
     env_file: .env
+    command: gunicorn kittygram_backend.wsgi:application --bind 0.0.0.0:9000
+    depends_on:
+      - db
     volumes:
-      - static_volume:/backend_static
+      - static:/backend_static
+      - media:/app/media
+  
   frontend:
     image: antonpyth/kittygram_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static_volume:/frontend_static
+      - static:/frontend_static
+  
   gateway:
     image: antonpyth/kittygram_gateway
     env_file: .env
+    depends_on:
+      - backend
+      - frontend
     volumes:
-      - static_volume:/staticfiles/
+      - static:/staticfiles/
+      - media:/mediafiles/
     ports:
       - 9000:80

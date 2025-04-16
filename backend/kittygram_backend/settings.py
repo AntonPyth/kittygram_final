@@ -1,13 +1,21 @@
+# flake8: noqa
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-placeholder')
+SECRET_KEY = 'django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-89$'
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
+ALLOWED_HOSTS = ['158.160.3.109',
+                 'kittygram777.zapto.org',
+                 '127.0.0.1',
+                 'localhost'
+                 ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,6 +72,9 @@ DATABASES = {
     }
 }
 
+# Password validation
+# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -91,8 +102,8 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/app/collected_static'
-# STATIC_ROOT = str(BASE_DIR / 'collected_static')
+STATIC_ROOT = "/backend_static/static"
+# STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -101,7 +112,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated', 
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -110,8 +121,5 @@ REST_FRAMEWORK = {
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-}
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
+}
